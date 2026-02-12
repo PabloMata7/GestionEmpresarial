@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="lorcana.list">
+      <field name="name">Lorcana list</field>
+      <field name="model">lorcana.lorcana</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="lorcana.action_window">
+      <field name="name">Lorcana window</field>
+      <field name="res_model">lorcana.lorcana</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="lorcana.action_server">
+      <field name="name">Lorcana server</field>
+      <field name="model_id" ref="model_lorcana_lorcana"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="Lorcana" id="lorcana.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="lorcana.menu_1" parent="lorcana.menu_root"/>
+    <menuitem name="Menu 2" id="lorcana.menu_2" parent="lorcana.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="lorcana.menu_1_list" parent="lorcana.menu_1"
+              action="lorcana.action_window"/>
+    <menuitem name="Server to list" id="lorcana" parent="lorcana.menu_2"
+              action="lorcana.action_server"/>
+-->
+  </data>
+</odoo>
