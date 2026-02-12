@@ -1,0 +1,62 @@
+services:
+  db:
+    image: postgres:15
+    container_name: odoo-db
+    environment:
+      - POSTGRES_USER=vault
+      - POSTGRES_PASSWORD=vault
+      - POSTGRES_DB=postgres
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+    networks:
+      - odoo-net
+
+  odoo:
+    image: odoo:17
+    container_name: odoo-app
+    depends_on: # Para que arranque primero el servicio db y despues odoo
+      - db
+
+    ports:
+      - "8069:8069"
+
+    environment:
+      - HOST=db
+      - USER=vault
+      - PASSWORD=vault
+      - DATABASE=postgres
+
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
+      - ./odoo.conf:/etc/odoo/odoo.conf
+
+    networks:
+      - odoo-net
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: odoo-pgadmin
+    depends_on:
+      - db
+
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=vault@trabajofinal.local
+      - PGADMIN_DEFAULT_PASSWORD=vault
+
+    ports:
+      - "5050:80"
+
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+    networks:
+      - odoo-net
+
+volumes:
+  odoo-db-data:
+  odoo-web-data:
+  pgadmin-data:
+
+networks:
+  odoo-net:
