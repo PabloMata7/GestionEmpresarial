@@ -22,15 +22,15 @@ Long description of module's purpose
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
-        'views/lorcana_menu.xml',
-        'views/lorcana_views.xml'
+        'security/ir.model.access.csv',
+        'views/template.xml'
+        'views/lorcana_views.xml',
+        'views/lorcana_menu.xml'
+        
 
     ],
     # only loaded in demonstration mode
     'application':True,
-    'instalation':True,
+    'installable':True,
 }
 
