@@ -1,32 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vamos a definir la vista tree (Tree) -->
+
     <record id="view_pokemon_tree" model="ir.ui.view">
         <field name="name">pokemon.tree</field>
         <field name="model">pokemon</field>
         <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
+            <tree string="Colección Pokemon" decoration-bf="rarity == 'Rare'" decoration-info="grade == '10'">
+                <field name="card_id" optional="show"/> <field name="name"/>
+                <field name="franchise"/>
+                <field name="colection"/> <field name="rarity"/>
+                <field name="grade" widget="badge"/> <field name="sellValue" widget="monetary" options="{'currency_field': 'currency_id'}"/>
             </tree>
         </field>
     </record>
 
-    <!-- Vamos a definir la vista formulario (Form) -->
-    <record id="view_pokemon_from" model="ir.ui.view">
+    <record id="view_pokemon_form" model="ir.ui.view">
         <field name="name">pokemon.form</field>
         <field name="model">pokemon</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group>      
-                        <field name="name"/>
-                    </group>
-                
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Nombre de la carta (ej. Charizard)"/>
+                        </h1>
+                        <h3>
+                            <span class="o_form_label">ID: </span>
+                            <field name="card_id"/>
+                        </h3>
+                    </div>
+
                     <group>
-                        <field name="description"/>
+                        <group string="Detalles de la Serie">
+                            <field name="franchise"/>
+                            <field name="colection"/>
+                            <field name="edition"/>
+                        </group>
+                        
+                        <group string="Valoración">
+                            <field name="rarity"/>
+                            <field name="grade"/>
+                            <field name="marketValue" widget="monetary"/>
+                            <field name="sellValue" widget="monetary"/>
+                        </group>
                     </group>
+
+                    <notebook>
+                        <page string="Descripción">
+                            <field name="description" placeholder="Escribe aquí los detalles de la carta..."/>
+                        </page>
+                        <page string="Notas Técnicas">
+                            <group>
+                                <div class="text-muted">
+                                    Espacio reservado para metadatos futuros.
+                                </div>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
+
+    <record id="view_pokemon_search" model="ir.ui.view">
+        <field name="name">pokemon.search</field>
+        <field name="model">pokemon</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="franchise"/>
+                <field name="rarity"/>
+                <filter string="Valiosas (>100)" name="expensive" domain="[('sellValue', '>', 100)]"/>
+                <group expand="1" string="Agrupar Por">
+                    <filter string="Franquicia" name="franchise" context="{'group_by':'franchise'}"/>
+                    <filter string="Rareza" name="rarity" context="{'group_by':'rarity'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
 </odoo>

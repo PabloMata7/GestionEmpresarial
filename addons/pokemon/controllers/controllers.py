@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
-# from odoo import http
+from odoo import http
+from odoo.http import request
 
+class PokemonWebsite(http.Controller):
 
-# class Pokemon(http.Controller):
-#     @http.route('/pokemon/pokemon', auth='public')
-#     def index(self, **kw):
-#         return "Hello, world"
+    # @http.route define la URL, el tipo de autenticación y si usa el framework website
+    @http.route('/pokemon', auth='public', website=True)
+    def index(self, **kwargs):
+        # 1. Acceso a la DB (ORM)
+        # request.env es tu puntero al entorno global (Registry + Cursor DB + Usuario)
+        # Esto es equivalente a un "SELECT * FROM pokemon"
+        pokemons = request.env['pokemon'].sudo().search([])
 
-#     @http.route('/pokemon/pokemon/objects', auth='public')
-#     def list(self, **kw):
-#         return http.request.render('pokemon.listing', {
-#             'root': '/pokemon/pokemon',
-#             'objects': http.request.env['pokemon.pokemon'].search([]),
-#         })
-
-#     @http.route('/pokemon/pokemon/objects/<model("pokemon.pokemon"):obj>', auth='public')
-#     def object(self, obj, **kw):
-#         return http.request.render('pokemon.object', {
-#             'object': obj
-#         })
+        # 2. Renderizado
+        # Pasamos el string del ID del template y un diccionario de contexto (las variables)
+        return request.render('pokemon.pokemon_website_list', {
+            'pokemons': pokemons,
+        })
+        
+    @http.route('/pokemon/<model("pokemon"):carta>', auth='public', website=True)
+    def detail(self, carta, **kw):
+        return http.request.render('pokemon.pokemon_website_detail', {
+            'pokemon': carta, # Pasamos el objeto singular a la vista
+        })
 
