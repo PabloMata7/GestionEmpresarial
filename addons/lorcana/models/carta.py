@@ -4,8 +4,8 @@ from odoo import models, fields, api
 
 
 class lorcana(models.Model):
-    _name = 'lorcana.lorcana'
-    _description = 'lorcana.lorcana'    
+    _name = 'carta.carta'
+    _description = 'Carta de lorcana'    
 
     name=fields.Char(string="Nombre", required=True)
     id=fields.Integer(string="id", required=True)

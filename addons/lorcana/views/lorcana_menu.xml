@@ -1,1 +1,22 @@
 <?xml version='1.0' encoding="utf-8"?>
+<odoo>
+    <!-- Accion: abre la lista/form del modelo-->
+    <record id="action_lorcana" model="ir.actions.act_window">
+        <field name="name">Lorcana</field>
+        <field name="res_model">lorcana</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+
+     <!-- Menu principal-->
+     <menuitem id="menu_lorcana_root" 
+     name="Lorcana"
+     action="action_lorcana"
+     sequence="10"/>
+
+     <!-- Submenu -->
+      <menuitem id="menu_lorcana_carta"
+      name="Cartas"
+      parent="menu_lorcana_root"
+      action="action_lorcana"
+      sequence="10" />
+</odoo>
