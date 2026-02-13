@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
-# from odoo import http
+from odoo import http
+from odoo.http import request
 
 
-# class OnePiece(http.Controller):
-#     @http.route('/one_piece/one_piece', auth='public')
-#     def index(self, **kw):
-#         return "Hello, world"
+class OnePiece(http.Controller):
+    @http.route('/one_piece', auth='public', website = True)
+    def cartas_list(self,**kwargs):
+        cartas = request.env['carta.carta'].sudo().search([])
+        return request.render('one_piece.web_one_piece_list',{
+            'cartas':cartas
+        })
 
-#     @http.route('/one_piece/one_piece/objects', auth='public')
-#     def list(self, **kw):
-#         return http.request.render('one_piece.listing', {
-#             'root': '/one_piece/one_piece',
-#             'objects': http.request.env['one_piece.one_piece'].search([]),
-#         })
 
-#     @http.route('/one_piece/one_piece/objects/<model("one_piece.one_piece"):obj>', auth='public')
-#     def object(self, obj, **kw):
-#         return http.request.render('one_piece.object', {
-#             'object': obj
-#         })
+    @http.route('/one_piece/<model("one.piece"):carta>', auth='public', website = True)
+    def cartas_detail(self, carta,**kw):
+        return http.request.render('one_piece.web_carta_detail', {
+            'carta': carta
+        })
+
 
