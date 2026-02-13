@@ -1,3 +1,4 @@
+
 <odoo>
   <data>
     <record id="action_team_window" model="ir.actions.act_window">

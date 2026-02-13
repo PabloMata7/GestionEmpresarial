@@ -8,9 +8,11 @@
     'depends': ['base', 'website'],  # [cite: 90] Dependencia necesaria para controladores web
     'data': [
         'security/ir.model.access.csv',
-        'views/views.xml',
+        # 'views/views.xml',
         'views/about_us_menu.xml',      #  Menús separados
         'views/templates.xml',  # [cite: 92] Plantillas QWeb
     ],
     'application': True,
+    'installable': True,
+    
 }
