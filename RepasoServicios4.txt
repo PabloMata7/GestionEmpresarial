@@ -1,0 +1,164 @@
+VAMOS A CREAR NUESTRO WEBSITE
+-----------------------------
+PASO 1- INSTALAMOS LA APP DE WEBSITE EN ODOO
+--------------------------------------------
+1. Entramos en odoo
+http://localhost:8069/web
+
+2. Activamos el modo desarrollador
+3. Vamos a aplicaciones y lo instalamos (website/sitio web)
+
+Al hacer esta configuracion, vamos a crear una web pública en:
+http://localhost:8069/
+
+
+-----Instrucciones/Comandos básicas-------
+Si el contenedor no esta arrancado tenemos que hacer
+> docker compose up -d
+
+Entramos en el ERP
+------------------
+Abrimos el navegador
+http://localhost:8069 --> asistente inicial de Odoo
+Vamos a crear la BD inicial --> odoo_clase
+email: admin@odoo.local
+password:admin
+
+Para reiniar docker si ya lo tenemos levantado:
+> docker restart odoo-app
+
+Si nos aparecen errores en la instalacion del modulo, podemos ejecutar:
+> docker compose logs -f odoo
+-----Instrucciones/Comandos básicas-------
+
+PASO 2 - CONTROLLERS
+--------------------
+1. Cambiamos el nombre de nuestro controlador
+---------------------------------------------
+Con la ejecución de scaffold se ha creado el archivo controllers.py, vamos a
+
+1.1 renombrar controlador a main.py.
+1.2 Despues actualizamos el import en __init__.py
+
+El comando scaffold nos da un ejemplo minimo para comprobar que todo funciona de la manera
+adecuada. Ahora vamos a cambiarlo para que las rutas muestren los datos reles del modelo que
+hemos creado y estamos usando en el ORM, tambien vamos a utiliza plantillas Qweb.
+
+Qweb es el motor de plantillas de Odoo:
+Nos sirve para:
+    · Generar HTML dinámico
+    · Mostrar datos de modelos
+    · Hacer bucles y condiones
+
+Codigo del controlador main.py:
+
+    |---> Definimos que es un controlador web
+---------------------------------------------
+class GestionProductos(http.Controller):
+
+        |--> URL publica
+        |           |--> no necesitamos estar logueados para acceder
+        |           |           |--> pertenece a website y no al backend
+        ----------------------------------------------------------------
+        @http.route('/productos', auth='public', website=True)
+
+
+        |--> Se ejecuta cuando alguien entra en /productos
+        |--> self es el propio objeto de la clase, una instancia del controlador web
+        |--> kwargs, recoge parametros de la URL, por ejemplo: GET /productos?categoria=2&page=1
+        |--> kwargs = {
+        |        'categoria': '2',
+        |        'page': '1'
+        |    }
+        |
+        --------------------------------------
+        productos_list(self, **kwargs):
+                        |--> busca TODOS los productos de nuestra BD
+                        |           |--> evita problemas de permisos
+                        |           |           |--> Busca TODOS ([])
+                        ----------------------------------------------
+                productos = request.env['gestion-producto'].sudo().search([])
+
+                        |--> Busca una plantilla Qweb con id: gestion_productos.web_productos_list
+                        |--> Aun no la hemos creado, la vamos a crear ahora
+                ----------------------------------------------------------
+                return request.render('gestion_productos.web_productos_list',{
+                    'productos': productos
+                --------------------------
+                    |--> le pasamos la variable productos
+                })
+
+PASO 3 - CREAMOS LA PLANTILLA QWEB(template.xml)
+------------------------------------------------
+Vamos a hacer 2 páginas web:
+    · Listado de productos (cards)
+    · Detalle de producto
+
+Vamos a usar Qweb + bootstrap
+Depende de los datos enviados desde controllers
+
+------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="web_productos_list" name="Web Lista Productos">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h1>Productos</h1>
+                <div class="row mt-3">
+                    <t t-foreach="productos" t-as="p">
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
+
+    |--> En esta linea vamos a definir que es un template Qweb
+    |--> id - identificador unico que usamos en request.render()
+    |
+<template id="web_producto_detail" name="Web Detalle Producto">
+    <t t-call="website-layout">
+        |
+        |--> Uso del layout de la web
+        |--> Se renderiza en el main
+        |--> Es el template base del website de Odoo
+        |--> Carga Bootstrap
+
+Cuando escribimos la lina <t t-call ....>, odoo hace algo parecido a esto:
+<html>
+    <head>
+        </head>
+    <body>
+        <header>...</header>
+        <main>
+            AQUI VA NUESTRA PLANTILLA
+        </main>
+    </body>
+</html>
+
+PASO 4 - MODIFICAMOS __manifest__.py
+------------------------------------
+1º Añadimos la dependencia website
+2º Importamos templates
+
+PASO 5 - REINICIAMOS Y ACTUALIZAMOS EL MÓDULO
+---------------------------------------------
+1. Ejecutamos
+> docker compose restart odoo
+
+2. En Odoo
+http://localhost:8069/web ---> para abrir el BACKEND
+· Aplicaciones -> Actualizamos la lista de aplicaciones
+· Actualizamos nuestro modulo
+
+PASO 6 - PROBAMOS EN EL NAVEGADOR
+---------------------------------
+http://localhost:8069/PRODUCTOS
+· Pulsamos en ver detalle y nos tiene que llevar a la web detalle productos

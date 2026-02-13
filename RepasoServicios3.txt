@@ -1,0 +1,208 @@
+PRIMER MODULO Y PRIMERA VISTA (MODULO GESTION_PRODUCTOS)
+---------------------------------------------------------
+Objetivos
+----------
+Al terminar la clase seremos capaces de:
+    · Crear un modelo nuevo en Odoo usando Python
+    · Crear vistas tree y form usando XML
+    · Crear una accion y menus para acceder al modelo
+    · Ver el modulo funcionando dentro del ERP
+
+Requisitos
+-----------
+· Odoo levantado con docker
+. Modulo creado mediante scaffold
+La ruta en la que hemos creado nuestro modulo es:
+/mnt/extra-addons/gestion_productos
+
+PASO 1 Entramos al contenedor y nos posicionamos en el módulo
+--------------------------------------------------------------
+(Para hacerlo desde terminal)
+> docker exec -it odoo-app-bash ---> abre una terminal bash en nuestro contenedor
+ESTO QUIEN YA LO HA CREADO NO TIENE QUE EJECUTARLO
+--------------------------------
+> odoo scaffold gestion_productos /mnt/extra-addons     
+-------------------------------
+> cd /mnt/extra-addons/gestion_productos --> nos movemos a la ruta donde hemos creado nuestro modulo
+> ls -la
+
+-------------------------------------------------------
+PASO 2- CREAMOS EL MODELO DE PYTHON (PRODUCTO INTERNO)
+------------------------------------------------------
+
+|CAMPO          |TIPO       |DESCRIPCION                |
+|---------------|--------------------------------       |
+|name           | char      | Nombre(Obligatorio)       |
+|default_code   | char      | Referencia                |
+|price          | float     | Precio                    |
+|active         | boolean   | Activo (Por defecto True) |
+|description    | text      | Descripcion               |
+
+1º Nos creamos el archivo en el que vamos a definir el modelo
+--------------------------------------------------------------
+dentro de models/producto.py
+
+Cuando definimos el modelo:
+
+ 
+_name = "gestion.producto"
+|         --------------
+|               |---> Identificador unico, 
+|                     en postgres se crea una BD gestion_producto
+|
+|--> nombre tecnico del modelo
+
+
+name = fields.Char(string = "Nombre", required=True)
+---    ----------  ----------------
+|          |                |
+|          |                |---> etiqueta visible
+|          |                    
+|          |--> tipo de campo
+|
+| --> nombre técnico del campo
+
+
+2º Importamos el modelo en models/__init__.py
+----------------------------------------------
+from . import producto
+
+3º Creamos las vistas (tree + form)
+-----------------------------------
+Las vistas se definen en formato XML y le dicen a Odoo como mostrar los datos
+Vamos a crear un archivo XML que defina:
+    · Vista lista (tree)
+    · Vista formulario (form)
+
+Creamos el archivo
+ > gestion_productos_views.xml
+
+----------------------------------------
+Jueves 29/01
+-------------
+En nuestra vista vemos el siguiente codigo:
+¿que signfica <record  model="ir.ui.view">?
+                        ------------------
+                                |---> es el modelo interno de Odoo para las vistas
+
+<field name="model"> gestion.producto</field>
+ |--> Indica el modelo que estamos utilizando en la vista
+
+<field name="arch" type="xml">
+ |--> aqui va la estructura visual
+
+4º Vamos a crear las acciones y menus para poder acceder desde Odoo
+--------------------------------------------------------------------
+Sin accion y menu, no podemos acceder al modelo desde Odoo
+
+Creamos el archivo
+> gestion_producto_menu.xml
+
+en la ruta views/
+
+Explicacion:
+· Accion --> define que se abre
+· Menu --> define desde donde se accede
+· sequence --> define el orden en el que aparecen los menus 
+
+Añadimos nuestra nueva vista a __manifest__
+---------------------------------------------
+Vamos a añadir:
+·"application": True --> le dice a Odoo que es una aplicacion
+·"installable": True --> esto le dice a Odoo que se puede instalar
+
+5º Reiniciamos odoo y probamos nuestro nuevo modulo
+---------------------------------------------------
+Si el contenedor no esta arrancado tenemos que hacer
+> docker compose up -d
+
+Entramos en el ERP
+------------------------
+Abrimos el navegador
+http://localhost:8069 --> asistente inicial de Odoo
+Vamos a crear la BD inicial --> odoo_clase
+email: admin@odoo.local
+password:admin
+
+Para reiniar docker si ya lo tenemos levantado:
+> docker restart odoo-app
+
+Si nos aparecen errores en la instalacion del modulo, podemos ejecutar:
+> docker compose logs -f odoo
+
+
+
+
+--------------------------
+gestion_productos_menu.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Accion: abre la lista/form del modelo -->
+     <record id="action_gestion_producto" model="ir.actions.act_window">
+        <field name="name">Productos Internos</field>
+        <field name="res_model">gestion.producto</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+
+     <!-- Menu principal -->
+      <menuitem id="menu_gestion_productos_root"
+      name="Gestion Productos"
+      action="action_gestion_producto"
+      sequence="10" />
+
+      <!-- Submenu -->
+       <menuitem id="menu_gestion_productos_producto"
+       name="Productos Internos"
+       parent="menu_gestion_productos_root"
+       action="action_gestion_producto"
+       sequence="10" />
+</odoo>
+
+
+---------------------------
+
+--------------------------
+gestion_productos_views.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vamos a definir la vista (Tree) -->
+    <record id="view_gestion_productos_tree" model="ir.ui.view">
+        <field name="name">gestion.producto.tree</field>
+        <field name="model">gestion.producto</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="default_code"/>
+                <field name="price"/>
+                <field name="active"/>
+            </tree>
+        </field>
+
+    </record>
+
+    <!--  Vamos a definir la vista formulario (Form) -->
+    <record id="view_gestion_product_form" model="ir.ui.view">
+        <field name="name">gestion.producto.form</field>
+        <field name="model">gestion.producto</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="default_code"/>
+                        <field name="price"/>
+                        <field name="active"/>
+                    </group>
+
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
+
+---------------------------

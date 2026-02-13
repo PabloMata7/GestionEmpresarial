@@ -1,0 +1,174 @@
+OBJETIVO DE LA CLASE LEVANTAR 3 SERVICIOS EN DOCKER
+Y FAMILIARIZARSE CON EL ERP DE ODOO
+db(PostgreSQL) + pgAdmin + odoo con docker-copmpose
+---------------------------------------------------------
+En el archivo docker-compose.yml vamos a definir 3 servicios dentro de un "mini-ecosistema" docker:
+
+db --> base de datos de PostgreSQL
+odoo --> aplicacion de odoo (ERP)
+pgAdmin --> herramienta web para administrar la BD
+
+Todos los servicios:
+-Comparten una misma red odoo-net --> asi se van a ver por nombre
+-Usan volumenes -> para que los datos no se pierdan al borrar contenedores
+
+Vamos a analizar la configuracion del fichero docker-compose.yml
+-------------------------
+1.SERVICIO DB(PostgreSQL)
+-------------------------
+db:
+  image: postgres:15
+  container_name: odoo-db
+  environment:
+    - POSTGRES_USER=odoo
+    - POSTGRES_PASSWORD=odoo
+    - POSTGRES_DB=postgres
+  volumes:
+    - odoo-db-data:/var/lib/postgresql/data
+  networks:
+    - odoo-net
+-------------------------
+networks: odoo-net
+El servicio se conecta a la red lógica odoo-net
+Dentro de esta red, el host db apunta a este contenedor
+
+-------------------------
+2.SERVICIO ODOO(La APP ERP)
+-------------------------
+odoo:
+  image: odoo:17
+  container_name: odoo-app
+  depends_on: --> Para que arranque primero el servicio db y despues odoo
+    - db
+  ports:
+    - "8069:8069"
+  environment:
+    - HOST=db
+    - USER=odoo
+    - PASSWORD=odoo
+    - DATABASE=postgres
+  volumes:
+    - odoo-web-data:/var/lib/odoo
+  networks:
+    - odoo-net
+
+-------------------------
+ports: "8069:8069"
+Puerto interno del contenedor (donde escucha odoo): 8069
+Puerto en nuestra maquina 8069
+   |---> Accedemos al navegador con http://localhost:8069
+
+environment(conexion con la BD)
+Aqui esta la clave de como se conecta a db:
+-------------------------
+HOST=db ---> El host es el nombre del servicio de postgres, db(en este caso)
+        Gracias a la red odoo-net, db se resuelve en el contenedor de PostgreSQL
+USER=odoo --> mismo usuario que definimos en la variable POSTGRES_USER
+PASSWORD=odoo --> misma contraseña que la variable POSTGRES_PASSWORD
+DATABASE=postgres --> misma base de datos que en la variable POSTGRES_DB
+
+Es decir:
+Odoo se conecta a la base de datos usando host db,
+puerto por defecto 5432,
+usuario odoo,
+contraseña odoo y
+base de datos postgres
+
+volumes:
+- odoo-web-data:/var/lib/odoo
+Se almacenan datos internos de Odoo (configuracion, modulos instalados, etc...)
+   |-> Persistencia de datos
+
+networks: odoo-net
+Se conecta a la misma red que db, asi puede encontrarlo por HOST=db
+
+-------------------------
+3.SERVICIO PGADMIN (Cliente grafico de postgres)
+-------------------------
+pgadmin:
+  image: dpage/pgadmin4:latest
+  container_name: odoo-pgadmin
+  depends_on:
+    - db
+  environment:
+    - PGADMIN_DEFAULT_EMAIL=admin@example.com
+    - PGADMIN_DEFAULT_PASSWORD=admin
+  ports:
+    - "5050:80"
+  volumes:
+    - pgadmin-data:/var/lib/pgadmin
+  networks:
+    - odoo-net
+-------------------------
+Las credenciales definidas en environment son para entrar en pgadmin
+
+ports: "5050:80"
+Puerto interno:80
+Puerto externo:5050
+   |--> Accedemos a pgadmin en http://localhost:5050
+
+volumes:
+  - pgadmin-data:/var/lib/pgadmin
+Persistencia, guarda la configuracion, servidores que añadimos, conexiones, etc...
+
+-------------------------
+4.COMO SE CONFIGURA CADA SERVICIO ENTRE SERVICIO
+
+  Comunicacion Odoo <-> PostgresSQL
+  Comparten la red odoo-net
+  Odoo usa HOST=db(el nombre del servicio) como host de la BD
+  Credenciales de Odoo = credenciales que definimos en db:
+    usuario odoo
+    contraseña odoo
+    base de datos postgres
+
+  Comunicacion pgadmin <-> postgresql
+  Tambien comparte la red odoo-net
+  En la interfaz pgAdmin, al crear un servidor nuevo:
+    HOST: db
+    port: 5432
+    user: odoo
+    password: odoo
+  Al configurarlo, vemos las mismas tablas que esta usando odoo
+
+  PERSISTENCIA
+    postgres guarda datos en odoo-db-data
+    odoo guarda sus datos internos en odoo-web-data
+    pgadmin guarda su configuracion en pgadmin-data
+
+------------------------------------
+5. PASOS PARA DESPLEGAR
+------------------------
+1. Levantamos los servicios
+> docker compose up -d --> 
+
+¿Como comprobamos que se ha levantado?
+> docker ps
+
+-------------------------
+6.NOS CONECTAMOS A ODOO
+-------------------------
+Abrimos el navegador
+http://localhost:8069 --> asistente inicial de Odoo
+Vamos a crear la BD inicial --> odoo_db_practica
+email: admin@dam.local
+password:admin
+
+¡No hacemos clic en DEMO DATA!
+
+-------------------------
+7.USO DE PGADMIN
+-------------------------
+Abrimos en el navegador
+http://localhost:5050
+Entramos con:
+    email: admin@example.com
+    password: admin
+
+2. Crear conexion a la base de datos:
+    Ventana Conexion:
+      Host:db
+      Port:5432
+      Maintenance database: postgres
+      Username: odoo
+      Password: odoo

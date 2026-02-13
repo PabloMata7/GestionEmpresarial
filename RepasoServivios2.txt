@@ -1,0 +1,157 @@
+## Preparacion del entorno para desarrollar modulos de Odoo
+
+Vamos a sentar las bases para el desarrollo de los módulos.
+Veremos como preparar Odoo para cargar modulos personalizados y la estructura
+minima de un modulo de Odoo.
+
+¿Qué es un Addon en Odoo?
+Es odoo, un addon es un modulo. Una coleccion de archivos y carpetas que extienden la
+funcionalidad estándar de Odoo, añadiendo nuevas aplicaciones, caracteristicas o personalizaciones
+Se desarrolla principalmente usando Python y XML y configurando las rutas para que Odoo
+las detecte y cargue.
+
+## Definicion de Addon
+
+1. Extensión de funcionalidad --> es una pieza de código empaquetada, como por ejemplo una
+aplicacion de inventario personalizada o una integracion con otro sistema.
+
+2.Componentes tipicos de un addon:
+|--> Archivos Python (para la lógica de negocio)
+|--> Vistas XML (para la interfaz de usuario)
+|--> Recursos estáticos (CSS, JS, imágenes...)
+|--> Un archivo de manifiesto (**manifest**.py) que describe el modulo
+
+3. Organizacion
+Los addons se almacenan en directorios especificos (la ruta addons), que el servidor Odoo
+escanea para encontrar módulos listos para instalar y usar. Permitiendo de esta manera
+separar los módulos oficiales de los personalizados.
+
+## ¿Como se lleva acabo el desarrollo?
+
+## PASO 1 - Creacion de nuestra carpeta addons
+
+Dentro de nuestro directorio al nivel del archivo docker-compose.yml, creamos la carpeta
+addons
+
+## PASO 2 - Configuracion
+
+Informamos al servidor Odoo sobre nuestro nuevo addon añadiendo la ruta en nuestro directorio
+en la opcion addons-path
+
+## PASO 3 - Instalacion
+
+Una vez configurado, Odoo detecta el nuevo addon y podemos instalarlo desde la interfaz gráfica
+de aplicaciones.
+
+En resumen, los addons son la base de personalización y extensión de Odoo, permitiendonos
+como desarrolladores crear soluciones a medida en la plataforma.
+
+2. Estructura básica de un módulo (addon) Odoo:
+
+---
+
+mi_modulo/
+|--> **init**.py
+|--> **manifest**.py
+|--> models/
+|       |--> **init**.py
+|       |--> mi_modelo.py
+|
+|--> security/
+|       |--> ir.model.access.csv
+|       |--> security.xml
+|
+|--> views/
+|       |--> mi_modelo_views.xml
+|
+|--> data/
+|       |--> datos_iniciales.xml
+|
+|--> demo/
+|       |--> demo.xml
+|
+|--> report/
+|       |--> report.xml
+|
+|--> static/
+|--> description/
+|---> icon.png
+
+3. Creacion de un modulo desde 0
+
+---
+
+## PASO 1 - Creacion de nuestra carpeta addons
+
+Dentro de nuestro directorio al nivel del archivo docker-compose.yml, creamos la carpeta
+addons
+
+## PASO 2
+
+Vamos a modificar nuestro fichero docker-compose y vamos a agregar en el servicio de odoo
+nuestra nueva carpeta ./addons, la vamos a montar en /mnt/extra-addons
+
+## PASO 3
+Tenemos que montar tambien el fichero de configuracion odoo.conf, que tambien va a estar creado a la altura de nuestro docker-compose.yml Dentro de odoo.conf tenemos que añadir la configuracion:
+[options] addons_path = /usr/lib/python3/dist-packages/odoo/addons,/mtn/extra-addons
+Este fichero lo vamos a montar en /etc/odoo/odoo.conf
+
+## PASO 4
+Limpiamos docker desktop, imagenes, volumenes... 
+
+Arrancamos los contenedores:
+docker compose up -d
+
+Comprobamos que se arrancan nuestros contenedores:
+docker ps --> Tenemos que ver 3 contenedores
+
+Vamos a a comprobar que todo ha ido bien:
+docker exec -it odoo-app bash ---> este comando abre una terminal bash
+
+Dentro de la terminal vamos a ejecutar:
+odoo --help | head |---> Este comando lo que hace es mostrar las 10 primeras lineas de las opciones con las que se puede arrancar odoo Permite que comprobemos que odoo funciona La salida que esperamos ver es Usage: odoo server [options]....
+
+cat /etc/odoo/odoo.conf 2>/dev/null | |--> Este comando muestra por pantalla el contenido del fichero odoo.conf |--> Nos sirve para comprobar que el archivo se ha creado bien |--> La parte 2>/dev/null --> manda los errores "a la nada" |--> La salida que esperamos ver: [options] addons_path.....
+
+ls -la /mnt/extra-addons | |--> Sirve para comprobar que la carpeta existe y esta bien montada en local |--> podemos ver los addons personalizados |--> La salida que esperamos ahora es algo parecido a esto (Ahora mismo nuestra carpeta esta vacia) |--> total 4 |--> drwxc... 1 root root ...
+
+Para salir en la terminal una vez que hemos hecho todas las comprobaciones:
+> Exit o Cntrl + C
+
+## PASO 5 - CREAMOS UN MODULO VACIO CON SCAFFOLD
+¿Que es scaffold?
+
+En odoo, scaffols es una herramienta que genera automaticamente la estructura básica de un módulo. 
+En lugar de crear todas las carpetas y archivos, utilizamos un "andamio" scaffold. 
+Define la estructura minima correcta para empezar a desarrollar, asegurando que seguimos las reglas internas de Odoo. 
+Despues como desarrolladores: -Definimos modelos en Python -Creamos vistas en XML -Ajustamos la seguridad -Añadimos la lógica de negocio
+
+¿Qué genera exactamente scaffold? 
+mi_modulo/ |--> init.py |--> manifest.py |--> models/ |--> security/ |--> views/ |--> demo/ |--> controllers
+
+Es importante que utilicemos el comando scaffold porque: 
+-Nos evita errores de estructura 
+-Facilita entender cómo se organiza un módulo 
+-Permite centrarnos en Python y XML 
+-Es la forma profesional y recomendada para crearlos
+
+CREAMOS UN NUEVO MODULO
+
+PASO 1 - Entramos en el contendor y abrimos una terminal
+docker exec -it odoo-app bash
+
+PASO 2 - Ejecutamos el comando scaffold
+odoo scaffold my_module /mnt/extra-addons ---> NO EJECUTAMOS ESTE!! | |--> carpeta destino | |---> nombre del modulo que vamos a crear
+
+El comando que ejecutamos es:
+odoo scaffold gestion_productos /mnt/extra-addons
+
+PASO 3 - Comprobamos que se ha creado el modulo
+ls -la /mnt/extra-addons |--> Esperamos que la salida sea: gestion_productos
+
+PASO 4 - Exploramos la estructura del modulo
+- cd /mnt/extra-addons/gestion_productos 
+- ls -la
+
+Salida, la estructura esperada: 
+gestion_productos/ |--> init.py |--> manifest.py |--> models/ |--> security/ |--> views/ |--> demo/ |--> controllers
