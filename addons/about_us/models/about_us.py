@@ -8,6 +8,3 @@ class AboutUs(models.Model):
     role = fields.Char(string="Rol / Módulo Desarrollado", required=True)
     description = fields.Text(string="Descripción")
     image = fields.Binary(string="Fotografía", attachment=True)
-
-    rarity = fields.Char(string="Nivel de Rareza", help="Ej: Legendario, Épico")
-    grade = fields.Char(string="Nota Esperada", help="Ej: 10/10")

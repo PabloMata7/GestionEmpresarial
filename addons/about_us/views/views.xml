@@ -5,7 +5,7 @@
       <field name="name">about.us.tree</field>
       <field name="model">about.us</field>
       <field name="arch" type="xml">
-        <tree string="Listado del Equipo">
+        <tree string="Lista del Equipo">
           <field name="name"/>
           <field name="role"/>
           <field name="description"/>

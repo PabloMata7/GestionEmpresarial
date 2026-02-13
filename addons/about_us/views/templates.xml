@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <template id="team_template" name="Nuestro Equipo">
+        <template id="view_equipo_final" name="Nuestro Equipo">
             <t t-call="website.layout">
                 <div class="container mt-5 mb-5">
                     <h1 class="text-center mb-4">Equipo de Desarrollo</h1>
