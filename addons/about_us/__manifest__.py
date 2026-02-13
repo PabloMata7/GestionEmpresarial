@@ -11,6 +11,7 @@
         # 'views/views.xml',
         'views/about_us_menu.xml',      #  Menús separados
         'views/templates.xml',  # [cite: 92] Plantillas QWeb
+        'views/about_us_views.xml',
     ],
     'application': True,
     'installable': True,

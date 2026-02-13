@@ -1,37 +1,51 @@
 <odoo>
   <data>
-    <record id="view_team_tree" model="ir.ui.view">
-        <field name="name">about.us.team.tree</field>
-        <field name="model">about.us.team</field>
-        <field name="arch" type="xml">
-            <tree string="Listado del Equipo">
-                <field name="name"/>
-                <field name="role"/>
-            </tree>
-        </field>
+
+    <record model="ir.ui.view" id="about_us_team_tree">
+      <field name="name">about.us.tree</field>
+      <field name="model">about.us</field>
+      <field name="arch" type="xml">
+        <tree string="Listado del Equipo">
+          <field name="name"/>
+          <field name="role"/>
+          <field name="description"/>
+        </tree>
+      </field>
     </record>
 
-    <record id="view_team_form" model="ir.ui.view">
-        <field name="name">about.us.team.form</field>
-        <field name="model">about.us.team</field>
-        <field name="arch" type="xml">
-            <form string="Miembro del Equipo">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="role"/>
-                        </group>
-                        <group>
-                            <field name="image" widget="image" class="oe_avatar"/>
-                        </group>
-                    </group>
-                    <group>
-                        <field name="description"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
+    <record model="ir.ui.view" id="about_us_team_form">
+      <field name="name">about.us.form</field>
+      <field name="model">about.us</field>
+      <field name="arch" type="xml">
+        <form string="Miembro del Equipo">
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="role"/>
+              </group>
+              <group>
+                <field name="image" widget="image" class="oe_avatar"/>
+              </group>
+            </group>
+            <group>
+              <field name="description"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
     </record>
+
+    <record model="ir.actions.act_window" id="about_us_action_window">
+      <field name="name">Equipo del Proyecto</field>
+      <field name="res_model">about.us</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Gestión Equipo" id="about_us_menu_root"/>
+
+    <menuitem name="Integrantes" id="about_us_menu_1" parent="about_us_menu_root"
+              action="about_us_action_window"/>
+
   </data>
 </odoo>
