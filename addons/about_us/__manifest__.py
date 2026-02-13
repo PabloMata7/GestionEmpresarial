@@ -1,34 +1,16 @@
-# -*- coding: utf-8 -*-
 {
-    'name': "about_us",
-
-    'summary': "Short (1 phrase/line) summary of the module's purpose",
-
-    'description': """
-Long description of module's purpose
-    """,
-
-    'author': "My Company",
-    'website': "https://www.yourcompany.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Uncategorized',
+    'name': "Módulo Equipo (About Us)",
+    'summary': "Gestión de los miembros del equipo del proyecto",
+    'description': "Módulo obligatorio para presentar al equipo de alumnos",
+    'author': "Rodri y equipo",
+    'category': 'Website',
     'version': '0.1',
-
-    # any module necessary for this one to work correctly
-    'depends': ['base'],
-
-    # always loaded
+    'depends': ['base', 'website'],  # [cite: 90] Dependencia necesaria para controladores web
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
-        'views/templates.xml',
+        'views/about_us_menu.xml',      #  Menús separados
+        'views/templates.xml',  # [cite: 92] Plantillas QWeb
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    'application': True,
 }
-

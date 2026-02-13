@@ -1,24 +1,28 @@
 <odoo>
     <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
-        </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
+        <template id="team_template" name="Nuestro Equipo">
+            <t t-call="website.layout">
+                <div class="container mt-5 mb-5">
+                    <h1 class="text-center mb-4">Equipo de Desarrollo</h1>
+                    <div class="row">
+                        <t t-foreach="members" t-as="member">
+                            <div class="col-md-3 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <img t-att-src="image_data_uri(member.image)" 
+                                         class="card-img-top" 
+                                         style="height: 250px; object-fit: cover;"
+                                         alt="Foto"/>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary" t-field="member.name"/>
+                                        <h6 class="card-subtitle mb-2 text-muted" t-field="member.role"/>
+                                        <p class="card-text" t-field="member.description"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
             </t>
-          </dl>
         </template>
--->
     </data>
 </odoo>
