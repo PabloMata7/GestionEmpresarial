@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================================== -->
+    <!--              VISTA TREE               -->
+    <!-- ===================================== -->
+    <record id="view_carta_tree" model="ir.ui.view">
+        <field name="name">carta.tree</field>
+        <field name="model">carta</field>
+        <field name="arch" type="xml">
+            <tree string="Cartas de Lorcana">
+                <field name="carta_id"/>
+                <field name="name"/>
+                <field name="franchise"/>
+                <field name="colection"/>
+                <field name="rarity"/>
+                <field name="grade"/>
+                <field name="marketValue"/>
+                <field name="sellValue"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- ===================================== -->
+    <!--              VISTA FORM               -->
+    <!-- ===================================== -->
+    <record id="view_carta_form" model="ir.ui.view">
+        <field name="name">carta.form</field>
+        <field name="model">carta</field>
+        <field name="arch" type="xml">
+            <form string="Carta de Lorcana">
+                <sheet>
+
+                    <!-- TÍTULO GRANDE -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre de la carta"/>
+                        </h1>
+                    </div>
+
+                    <!-- IMAGEN -->
+                    <group>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                    </group>
+
+                    <!-- INFORMACIÓN GENERAL -->
+                    <group string="Información General">
+                        <group>
+                            <field name="carta_id"/>
+                            <field name="franchise"/>
+                            <field name="colection"/>
+                        </group>
+
+                        <group>
+                            <field name="rarity"/>
+                            <field name="grade"/>
+                        </group>
+                    </group>
+
+                    <!-- INFORMACIÓN ECONÓMICA -->
+                    <group string="Valores de Mercado">
+                        <group>
+                            <field name="marketValue"/>
+                        </group>
+
+                        <group>
+                            <field name="sellValue"/>
+                        </group>
+                    </group>
+
+                    <!-- DESCRIPCIÓN -->
+                    <group string="Descripción">
+                        <field name="description" placeholder="Escribe una descripción de la carta..."/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
