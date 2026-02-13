@@ -1,0 +1,124 @@
+PRIMER MODULO Y PRIMERA VISTA (MODULO GESTION_PRODUCTOS)
+-------------------------------------------------------
+Objetivos
+----------
+Al terminar la clase seremos capaces de:
+    - Crear un modelo nuevo en Odoo usando Python
+    - Crear vistas tree y form usando XML
+    - Crear una accion y menus para acceder al modelo
+    - Ver el modulo funcionando dentro del ERP
+
+Requisitos
+-----------
+- Odoo levantado con Docker
+- Modulo creado mediante scaffold
+La ruta en la que hemos creado nuestro modulo es:
+/mnt/extra-addons/gestion_productos 
+
+PASO 1 Entramos al contenedor y nos posicionamos en el módulo
+--------------------------------------------------------------
+(Para hacerlo en la terminal)
+> docker exec -it odoo-app bash ----> abre una terminal bash en nuestro contenedor
+-------------------
+> odoo scaffold gestion_productos /mnt/extra-addons
+--------------------------
+> cd /mnt/extra-addons/gestion_productos
+> ls -la
+
+-------------------------------------------------
+PASO 2 - CREAMOS EL MODELO DE PYTHON (PRODUCTO INTERNO)
+---------------------------------------------------
+
+|CAMPO          |TIPO           |DESCRIPCION        |
+|---------------|---------------|-------------------|
+|name           |char           |Nombre(obligatorio)|
+|default_code   |char           |Referencia         |
+|price          |float          |Precio             |
+|active         |boolean        |Activo (True)      |
+|description    |text           |Descirpcion        |
+
+1º Nos creamos el archivo en el que vamos a definir el modelo
+-----------------------------------------------------
+dentro de models/producto.py
+
+Cuando definimos el modelo:
+
+_name = "gestion.producto"
+|        ----------------
+|           |--> Identificador unico,
+|                en postgres se crea una BD gestion_producto
+|
+|--> nombre técnico del modelo
+
+name = fields.Char(string = "Nombre", required=True)
+----   ----------  ----------------
+|       |                       | 
+|       |                       |--> etiqueta visible
+|       |
+|       |--> tipo de campo
+|
+|--> nombre técnico del equipo
+
+2º Importamos el modelo en models/__init__.py
+---------------------------
+from . import producto
+
+3º Creamos la vistas (tree y form)
+---------------------------------
+Las vistas se definen en formato XML y le dicen a Odoo como mostrar los datos 
+Vamos a crear un archivo XML que defina:
+    - Vista lista (tree)
+    - Vista formulario (form)
+
+Creamos el archivo
+> gestion_productos_views.xml
+
+
+-----------------------------------
+Jueves 29/01
+-------------
+En nuestra vista vemos el siguiente código:
+¿que significa?
+<record id="view_gestion_productos_tree" model="ir.ui.view">
+                                        -------------------
+                                        |---> es el modelo interno de Odoo para las vista
+<field name="model">gestion.producto</field>
+ |--> Indica el modelo que estamos utilizando en la vista
+
+<field name="arch" type="xml">
+ |--> aqui va la estructura visual
+
+4º Vamos a crear las acciones y menus para poder acceder desde Odoo
+------------------------------------------------------------------
+Sin accion y menu, no podemos acceder al modelo desde Odoo
+
+Creamos el archivo
+> gestion_productos_menu.xml
+
+en la ruta views/
+
+Explicacion:
+- Accion --> define que se abre
+- Menu --> define desde donde se accede
+- sequence --> define el orden en el que aparece
+
+Añadimos nuestra nueva vista a __manifest__
+---------------------------------------------
+Vamos a añadir:
+- "application": True --> le dice a Odoo que es una aplicacion
+- "installable": True --> esto le dice a Odoo que es instalable
+
+5º Reiniciamos odoo y probamos nuestro nuevo modulo
+----------------------------------------------------
+Si el contenedor no esta arrancado tenemos que hacer:
+> docker compose up -d
+
+Entramos en el ERP
+Abrimos el navegador
+http://localhost:8069 --->Asistente incial de odoo
+Vamos a crear la bd inicial --> odoo_clase
+email: admin@odoo.local
+password:admin
+
+Para reiniciar docker si ya lo tenemos levantado:
+>docker restart odoo-app
