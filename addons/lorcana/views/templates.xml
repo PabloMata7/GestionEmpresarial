@@ -1,24 +1,56 @@
-<odoo>
-    <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
-        </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
-            </t>
-          </dl>
-        </template>
--->
-    </data>
-</odoo>
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+  
+      <!-- Lista de cartas -->
+      <template id="web_cartas_list" name="Lista de Cartas">
+          <t t-call="website.layout">
+              <div class="container mt-4">
+                  <h1>Cartas de Lorcana</h1>
+                  <div class="row mt-3">
+                      <t t-foreach="cartas" t-as="c">
+                          <div class="col-12 col-md-4 mb-3">
+                              <div class="card h-100">
+                                  <t t-if="c.image">
+                                    <img t-att-src="'/web/image/carta/%s/image' % c.id" class="card-img-top"/>
+                                  </t>
+                                  <div class="card-body">
+                                      <h5 class="card-title" t-esc="c.name"/>
+                                      <p class="card-text">
+                                          <strong>Rareza:</strong> <t t-esc="c.rarity"/><br/>
+                                          <strong>Precio Venta:</strong> <t t-esc="c.sellValue"/>
+                                      </p>
+                                      <a t-att-href="'/cartas/%s' % c.id" class="btn btn-primary">Ver detalle</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </t>
+                  </div>
+              </div>
+          </t>
+      </template>
+  
+      <!-- Detalle de carta -->
+      <template id="web_carta_detail" name="Detalle Carta">
+          <t t-call="website.layout">
+              <div class="container mt-4">
+                  <a href="/cartas" class="btn btn-link">Volver</a>
+                  <h1 t-esc="carta.name"/>
+                  <t t-if="carta.image">
+                    <img t-att-src="'/web/image/carta/%s/image' % carta.id" class="img-fluid"/>
+                  </t>
+                  <ul class="list-group mt-3">
+                      <li class="list-group-item"><strong>ID:</strong> <t t-esc="carta.carta_id"/></li>
+                      <li class="list-group-item"><strong>Franquicia:</strong> <t t-esc="carta.franchise"/></li>
+                      <li class="list-group-item"><strong>Colección:</strong> <t t-esc="carta.colection"/></li>
+                      <li class="list-group-item"><strong>Rareza:</strong> <t t-esc="carta.rarity"/></li>
+                      <li class="list-group-item"><strong>Grado:</strong> <t t-esc="carta.grade"/></li>
+                      <li class="list-group-item"><strong>Precio Market:</strong> <t t-esc="carta.marketValue"/></li>
+                      <li class="list-group-item"><strong>Precio Venta:</strong> <t t-esc="carta.sellValue"/></li>
+                      <li class="list-group-item"><strong>Descripción:</strong> <t t-esc="carta.description or ''"/></li>
+                  </ul>
+              </div>
+          </t>
+      </template>
+  
+  </odoo>
+  

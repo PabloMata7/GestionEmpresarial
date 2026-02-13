@@ -7,7 +7,7 @@ class carta(models.Model):
     _name = 'carta.carta'
     _description = 'carta.carta'
 
-    name = fields.Char(string = "nombre", required = True)
+    name = fields.Char(string = "Nombre", required = True)
     card_id = fields.Integer(string = "Card ID", required = True)
     franchise = fields.Char(string = "Franquicia")
     description = fields.Text(string = "Descripción")
