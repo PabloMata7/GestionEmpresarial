@@ -16,5 +16,5 @@ class lorcana(models.Model):
     grade=fields.Char(string="Grado")
     marketValue=fields.Integer(string="PrecioMarket")
     sellValue=fields.Char(string="PrecioVenta", required=True)
-    # image=fields.Binary(string="Nombre")
+    image=fields.Binary(string="Nombre")
     

@@ -1,24 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
+    <!-- Aqui defines template Qweb para la lista de productos -->
+    <template id="web_productos_list" name="Web Productos">
+      <t t-call="website.layout">
+        <div class="container mt-4">
+          <h1>Productos</h1>
+          <!-- Cards de productos -->
+           <div class="row mt-3">
+              <!-- vamos a crear un bucle -->
+              <!-- cada producto, se le guarda en un p -->
+              <t t-foreach="productos" t-as="p">
+                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <!-- aqui ponemos el nombre del producto -->
+                       <!-- Accedemos a la variable con un p.name -->
+                        <h5 class="card-title" t-esc="p.name"/>
+                        <p class="card-text">
+                          <!-- or '' evita errores si el campo esta vacio -->
+                           <strong>Nombre:</strong><t t-esc="p.name or ''"/><br/>
+                           <strong>Precio:</strong><t t-esc="p.price"/>
+                        </p>
+                        <!-- genera URLS como: /productos/3 -->
+                         <a class="btn btn-primary" t-att-href="'/productos/%s' % p.id">
+                            ver detalle
+                         </a>
+                    </div>
+
+                  </div>
+
+                </div>
+              </t>
+           </div>
+        </div>
+      </t>
+    </template>
+
+    <!-- vamos a definir Qweb de detalle de producto -->
+    <template id="web_producto_detail" name="Web Detalle Producto">
+      <t t-call="website.layout">
+        <div class="container mt-4">
+          <a href="/productos" class="btn btn-link">Volver</a>
+          <h1 class="mt-2" t-esc="producto.name"/>
+          <ul class="list-group mt-3">
+            <li class="list-group-item"><strong>nombre:</strong><t t-esc="producto.name or ''"/></li>
+            <li class="list-group-item"><strong>precio:</strong><t t-esc="producto.price"/></li>
+            <li class="list-group-item"><strong>activo:</strong><t t-esc="producto.active "/></li>
+            <li class="list-group-item"><strong>descripcion:</strong><t t-esc="producto.description or ''"/></li>
+
           </ul>
-        </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
-            </t>
-          </dl>
-        </template>
--->
-    </data>
+        </div>
+
+      </t>
+    </template> 
 </odoo>
