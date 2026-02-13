@@ -5,7 +5,7 @@ services:
     environment:
       - POSTGRES_USER=vault
       - POSTGRES_PASSWORD=vault
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=vault
     volumes:
       - odoo-db-data:/var/lib/postgresql/data
     networks:
@@ -24,7 +24,7 @@ services:
       - HOST=db
       - USER=vault
       - PASSWORD=vault
-      - DATABASE=postgres
+      - DATABASE=vault
 
     volumes:
       - odoo-web-data:/var/lib/odoo
