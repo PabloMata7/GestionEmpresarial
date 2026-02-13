@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- ========================= -->
-    <!--        ACCIÓN             -->
-    <!-- ========================= -->
     <record id="action_carta" model="ir.actions.act_window">
         <field name="name">Cartas</field>
         <field name="res_model">carta</field>
@@ -15,19 +12,11 @@
         </field>
     </record>
 
-
-    <!-- ========================= -->
-    <!--      MENÚ PRINCIPAL       -->
-    <!-- ========================= -->
     <menuitem id="menu_lorcana_root"
               name="Lorcana"
               sequence="10"
               web_icon="base/static/description/icon.png"/>
 
-
-    <!-- ========================= -->
-    <!--        SUBMENÚ            -->
-    <!-- ========================= -->
     <menuitem id="menu_lorcana_cartas"
               name="Cartas"
               parent="menu_lorcana_root"
