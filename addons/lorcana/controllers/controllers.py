@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request
 
 class LorcanaWebsite(http.Controller):
 
     @http.route(['/cartas'], type='http', auth='public', website=True)
-    def listar_cartas(self, **kw):
+    def listar_cartas(self, **kwargs):
         cartas = request.env['carta'].sudo().search([])
         return request.render("lorcana.web_cartas_list", {'cartas': cartas})
 
