@@ -19,13 +19,12 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/templates.xml',
-        'views/lorcana_views.xml',
-        'views/lorcana_menu.xml'
-        
+    'security/ir.model.access.csv',
+    'views/templates.xml',
+    'views/lorcana_views.xml',
+    'views/lorcana_menu.xml',
+],
 
-    ],
     # only loaded in demonstration mode
     'application':True,
     'installable':True,

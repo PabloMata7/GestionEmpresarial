@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <!-- Aqui defines template Qweb para la lista de productos -->
-    <template id="web_productos_list" name="Web Productos">
-      <t t-call="website.layout">
-        <div class="container mt-4">
-          <h1>Productos</h1>
-          <!-- Cards de productos -->
-           <div class="row mt-3">
-              <!-- vamos a crear un bucle -->
-              <!-- cada producto, se le guarda en un p -->
-              <t t-foreach="productos" t-as="p">
-                <div class="col-12 col-md-6 col-lg-4 mb-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <!-- aqui ponemos el nombre del producto -->
-                       <!-- Accedemos a la variable con un p.name -->
-                        <h5 class="card-title" t-esc="p.name"/>
-                        <p class="card-text">
-                          <!-- or '' evita errores si el campo esta vacio -->
-                           <strong>Nombre:</strong><t t-esc="p.name or ''"/><br/>
-                           <strong>Precio:</strong><t t-esc="p.price"/>
-                        </p>
-                        <!-- genera URLS como: /productos/3 -->
-                         <a class="btn btn-primary" t-att-href="'/productos/%s' % p.id">
-                            ver detalle
-                         </a>
-                    </div>
-
+  <odoo>
+  
+      <!-- Lista de cartas -->
+      <template id="web_cartas_list" name="Lista de Cartas">
+          <t t-call="website.layout">
+              <div class="container mt-4">
+                  <h1>Cartas de Lorcana</h1>
+                  <div class="row mt-3">
+                      <t t-foreach="cartas" t-as="c">
+                          <div class="col-12 col-md-4 mb-3">
+                              <div class="card h-100">
+                                  <t t-if="c.image">
+                                    <img t-att-src="'/web/image/carta/%s/image' % c.id" class="card-img-top"/>
+                                  </t>
+                                  <div class="card-body">
+                                      <h5 class="card-title" t-esc="c.name"/>
+                                      <p class="card-text">
+                                          <strong>Rareza:</strong> <t t-esc="c.rarity"/><br/>
+                                          <strong>Precio Venta:</strong> <t t-esc="c.sellValue"/>
+                                      </p>
+                                      <a t-att-href="'/cartas/%s' % c.id" class="btn btn-primary">Ver detalle</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </t>
                   </div>
-
-                </div>
-              </t>
-           </div>
-        </div>
-      </t>
-    </template>
-
-    <!-- vamos a definir Qweb de detalle de producto -->
-    <template id="web_producto_detail" name="Web Detalle Producto">
-      <t t-call="website.layout">
-        <div class="container mt-4">
-          <a href="/productos" class="btn btn-link">Volver</a>
-          <h1 class="mt-2" t-esc="producto.name"/>
-          <ul class="list-group mt-3">
-            <li class="list-group-item"><strong>nombre:</strong><t t-esc="producto.name or ''"/></li>
-            <li class="list-group-item"><strong>precio:</strong><t t-esc="producto.price"/></li>
-            <li class="list-group-item"><strong>activo:</strong><t t-esc="producto.active "/></li>
-            <li class="list-group-item"><strong>descripcion:</strong><t t-esc="producto.description or ''"/></li>
-
-          </ul>
-        </div>
-
-      </t>
-    </template> 
-</odoo>
+              </div>
+          </t>
+      </template>
+  
+      <!-- Detalle de carta -->
+      <template id="web_carta_detail" name="Detalle Carta">
+          <t t-call="website.layout">
+              <div class="container mt-4">
+                  <a href="/cartas" class="btn btn-link">Volver</a>
+                  <h1 t-esc="carta.name"/>
+                  <t t-if="carta.image">
+                    <img t-att-src="'/web/image/carta/%s/image' % carta.id" class="img-fluid"/>
+                  </t>
+                  <ul class="list-group mt-3">
+                      <li class="list-group-item"><strong>ID:</strong> <t t-esc="carta.carta_id"/></li>
+                      <li class="list-group-item"><strong>Franquicia:</strong> <t t-esc="carta.franchise"/></li>
+                      <li class="list-group-item"><strong>Colección:</strong> <t t-esc="carta.colection"/></li>
+                      <li class="list-group-item"><strong>Rareza:</strong> <t t-esc="carta.rarity"/></li>
+                      <li class="list-group-item"><strong>Grado:</strong> <t t-esc="carta.grade"/></li>
+                      <li class="list-group-item"><strong>Precio Market:</strong> <t t-esc="carta.marketValue"/></li>
+                      <li class="list-group-item"><strong>Precio Venta:</strong> <t t-esc="carta.sellValue"/></li>
+                      <li class="list-group-item"><strong>Descripción:</strong> <t t-esc="carta.description or ''"/></li>
+                  </ul>
+              </div>
+          </t>
+      </template>
+  
+  </odoo>
+  
