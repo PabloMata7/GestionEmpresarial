@@ -22,13 +22,14 @@ Long description of module's purpose
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
+        'security/ir.model.access.csv',
+        # 'views/views.xml',
         'views/templates.xml',
+        'views/pokemon_menu.xml'
+        'views/pokemon_views.xml'
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    
+    'application': True,
+    'installable': True,
 }
 
