@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Accion: abre la lista/form del modelo-->
+     <record id="action_carta" model="ir.actions.act_window">
+        <field name="name">Pokemon</field>
+        <field name="res_model">pokemon</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+
+     <!-- Menu principal-->
+      <menuitem id="menu_pokemon_root" 
+      name="Pokemon"
+      action="action_carta"
+      sequence="10"/>
+
+     <!-- Submenu -->
+      <menuitem id="menu_pokemon_carta"
+      name="Cartas"
+      parent="menu_pokemon_root"
+      action="action_carta"
+      sequence="10" />
+</odoo>

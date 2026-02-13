@@ -1,24 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
-        </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
+        <template id="pokemon_website_list" name="Listado de Cartas">
+            <t t-call="website.layout">
+                
+                <style>
+                    /* Fondo general */
+                    .pokemon-collection-bg {
+                        background-color: #f4f6f9;
+                        min-height: 100vh;
+                        padding-bottom: 50px;
+                    }
+                    
+                    /* La Carta */
+                    .poke-card {
+                        border: none;
+                        border-radius: 12px;
+                        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                        background: #ffffff;
+                        overflow: hidden; /* Mantiene las esquinas redondas */
+                        position: relative; /* Necesario para que los hijos absolutos se posicionen respecto a esto */
+                    }
+
+                    .poke-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.12);
+                        cursor: pointer;
+                    }
+
+                    /* Contenedor de Imagen */
+                    .poke-img-container {
+                        height: 280px;
+                        background-color: #eaeff2;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 15px;
+                        position: relative;
+                        z-index: 1; /* La imagen está en capa 1 */
+                    }
+
+                    .poke-img {
+                        max-height: 100%;
+                        max-width: 100%;
+                        object-fit: contain;
+                        filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.2));
+                    }
+
+                    /* --- CAMBIOS AQUÍ: PRECIO --- */
+                    .price-tag {
+                        position: absolute;
+                        top: 0px;  /* Pegado arriba del todo */
+                        right: 0px; /* Pegado a la derecha del todo */
+                        
+                        /* Estilo visual destacado */
+                        background: linear-gradient(135deg, #28a745 0%, #218838 100%); /* Degradado verde */
+                        color: white;
+                        
+                        /* Tamaño y Espaciado */
+                        padding: 8px 15px; /* Más gordito */
+                        border-bottom-left-radius: 12px; /* Solo redondeamos la esquina interior */
+                        
+                        /* Tipografía */
+                        font-weight: 900; /* Extra Bold */
+                        font-size: 1.1rem; /* Letra más grande */
+                        letter-spacing: 0.5px;
+                        
+                        /* Layering (Vital para que no se esconda) */
+                        z-index: 100; /* Capa 100: Flota sobre todo lo demás */
+                        box-shadow: -2px 2px 5px rgba(0,0,0,0.2);
+                    }
+                    
+                    /* Un pequeño toque para el símbolo de dolar */
+                    .currency-symbol {
+                        font-size: 0.8em; /* Un pelín más pequeño para estilo */
+                        vertical-align: top;
+                        margin-left: 2px;
+                        opacity: 0.9;
+                    }
+                </style>
+
+                <div class="pokemon-collection-bg">
+                    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-white rounded shadow-sm">
+                        <div class="col-md-5 p-lg-5 mx-auto my-5">
+                            <h1 class="display-4 font-weight-normal">PokéDex Manager</h1>
+                            <p class="lead font-weight-normal text-muted">Colección privada de cartas TCG.</p>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <t t-foreach="pokemons" t-as="p">
+                                <div class="col-12 col-sm-6 col-lg-3 mb-4">
+                                    
+                                    <a t-attf-href="/pokemon/#{p.id}" class="card poke-card h-100 shadow-sm text-decoration-none">
+                                        
+                                        <div class="price-tag">
+                                            <t t-esc="p.sellValue" t-options='{"widget": "float", "precision": 2}'/>
+                                            <span class="currency-symbol">$</span>
+                                        </div>
+
+                                        <div class="poke-img-container">
+                                            <img class="poke-img" 
+                                                 t-attf-src="/web/image/pokemon/#{p.id}/image" 
+                                                 alt="Pokemon Card"/>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <span class="badge badge-info mb-2"><t t-esc="p.rarity"/></span>
+                                            <h5 class="card-title text-dark font-weight-bold text-truncate" t-att-title="p.name">
+                                                <t t-esc="p.name"/>
+                                            </h5>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">
+                                                    <i class="fa fa-folder-open-o mr-1"></i> <t t-esc="p.franchise"/>
+                                                </small>
+                                                <t t-if="p.grade">
+                                                    <small class="text-warning font-weight-bold">
+                                                        PSA <t t-esc="p.grade"/>
+                                                    </small>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
             </t>
-          </dl>
         </template>
--->
+
+        <template id="pokemon_website_detail" name="Detalle de Carta">
+            <t t-call="website.layout">
+                <div class="container mt-5 mb-5">
+                    
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-light">
+                            <li class="breadcrumb-item"><a href="/pokemon">Colección</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><t t-esc="pokemon.name"/></li>
+                        </ol>
+                    </nav>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-5 bg-light text-center">
+                                    <img class="img-fluid" 
+                                         t-attf-src="/web/image/pokemon/#{pokemon.id}/image" 
+                                         style="max-height: 500px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);"
+                                         alt="Pokemon Detail"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h1 class="display-4 font-weight-bold text-primary mb-0">
+                                <t t-esc="pokemon.name"/>
+                            </h1>
+                            <div class="text-muted mb-4">
+                                ID Colección: <span class="font-monospace">#<t t-esc="pokemon.card_id"/></span>
+                            </div>
+
+                            <div class="p-3 mb-4 bg-white border rounded shadow-sm d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted text-uppercase">Precio de Mercado</small>
+                                    <h4 class="mb-0 text-muted">
+                                        <t t-esc="pokemon.marketValue" t-options='{"widget": "monetary", "display_currency": user_id.company_id.currency_id}'/>
+                                    </h4>
+                                </div>
+                                <div class="text-right">
+                                    <small class="text-success text-uppercase font-weight-bold">Precio Venta</small>
+                                    <h2 class="mb-0 text-success font-weight-bold">
+                                        <t t-esc="pokemon.sellValue" t-options='{"widget": "float", "precision": 2}'/> $
+                                    </h2>
+                                </div>
+                            </div>
+
+                            <table class="table table-striped table-hover mt-4">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Franquicia</th>
+                                        <td><t t-esc="pokemon.franchise"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Colección</th>
+                                        <td><t t-esc="pokemon.colection"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Edición</th>
+                                        <td><t t-esc="pokemon.edition"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Rareza</th>
+                                        <td><span class="badge badge-info"><t t-esc="pokemon.rarity"/></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Grado PSA</th>
+                                        <td>
+                                            <t t-if="pokemon.grade">
+                                                <span class="badge badge-warning text-white">PSA <t t-esc="pokemon.grade"/></span>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="text-muted">Sin graduar</span>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="mt-4">
+                                <h5>Descripción</h5>
+                                <p class="text-muted">
+                                    <t t-esc="pokemon.description"/>
+                                </p>
+                            </div>
+                            
+                            <div class="mt-5">
+                                <a href="/pokemon" class="btn btn-outline-secondary btn-lg btn-block">
+                                    <i class="fa fa-arrow-left"></i> Volver a la lista
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
     </data>
 </odoo>
