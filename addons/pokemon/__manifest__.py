@@ -25,8 +25,8 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         # 'views/views.xml',
         'views/templates.xml',
+        'views/pokemon_views.xml',
         'views/pokemon_menu.xml'
-        'views/pokemon_views.xml'
     ],
     
     'application': True,

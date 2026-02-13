@@ -1,1 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vamos a definir la vista tree (Tree) -->
+    <record id="view_pokemon_tree" model="ir.ui.view">
+        <field name="name">pokemon.tree</field>
+        <field name="model">pokemon</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vamos a definir la vista formulario (Form) -->
+    <record id="view_pokemon_from" model="ir.ui.view">
+        <field name="name">pokemon.form</field>
+        <field name="model">pokemon</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>      
+                        <field name="name"/>
+                    </group>
+                
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

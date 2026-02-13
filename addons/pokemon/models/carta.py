@@ -3,12 +3,12 @@
 from odoo import models, fields, api
 
 
-class pokemon(models.Model):
-    _name = 'pokemon.pokemon'
-    _description = 'Pokemon'
+class carta(models.Model):
+    _name = 'pokemon'
+    _description = 'Carta de Pokemon'
     
     name = fields.Char(string = "Nombre", required=True)
-    id = fields.Integer(string = "ID", required=True)
+    card_id = fields.Integer(string = "Card ID", required=True)
     franchise = fields.Char(string = "Franquicia")
     description = fields.Text(string = "Descripcion")
     colection = fields.Char(string = "Coleccion")
