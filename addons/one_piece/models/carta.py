@@ -3,12 +3,12 @@
 from odoo import models, fields, api
 
 
-class one_piece(models.Model):
-    _name = 'one_piece.one_piece'
-    _description = 'one_piece.one_piece'
+class carta(models.Model):
+    _name = 'carta.carta'
+    _description = 'carta.carta'
 
     name = fields.Char(string = "nombre", required = True)
-    id = fields.Integer(string = "ID", required = True)
+    card_id = fields.Integer(string = "Card ID", required = True)
     franchise = fields.Char(string = "Franquicia")
     description = fields.Text(string = "Descripción")
     colection = fields.Char(string = "Colección")

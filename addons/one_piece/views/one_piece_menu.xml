@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Accion: abre la lista/form del modelo-->
+     <record id="action_carta_carta" model="ir.actions.act_window">
+        <field name="name">One Piece</field>
+        <field name="res_model">carta.carta</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+
+     <!-- Menu principal-->
+    <menuitem id="menu_one_piece_root" 
+    name="One Piece"
+    action="action_carta_carta"
+    sequence="10"/>
+
+      <!-- Submenu -->
+    <menuitem id="menu_one_piece_carta"
+    name="Cartas"
+    parent="menu_one_piece_root"
+    action="action_carta_carta"
+    sequence="10" />
+</odoo>
