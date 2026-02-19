@@ -1,0 +1,15 @@
+
+<odoo>
+  <data>
+    <record id="action_team_window" model="ir.actions.act_window">
+        <field name="name">Equipo del Proyecto</field>
+        <field name="res_model">about.us</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_team_root" name="Gestión Equipo"/>
+
+    <menuitem id="menu_team_list" parent="menu_team_root" 
+              name="Integrantes" action="action_team_window"/>
+  </data>
+</odoo>
