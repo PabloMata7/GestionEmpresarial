@@ -1,0 +1,99 @@
+<<<<<<< Updated upstream
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_one_piece_tree" model="ir.ui.view">
+        <field name="name">carta.carta.tree</field>
+        <field name="model">carta.carta</field> <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="franchise"/>
+                <field name="rarity"/>
+                <field name="sellValue"/>
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_onepiece_tree" model="ir.ui.view">
+        <field name="name">onepiece.card.tree</field>
+        <field name="model">onepiece.card</field>
+        <field name="arch" type="xml">
+            <tree string="Grand Line Collection">
+                <field name="card_id" optional="show"/>
+                <field name="name"/>
+                <field name="type_card" widget="badge" decoration-info="type_card == 'character'" decoration-danger="type_card == 'leader'"/>
+                <field name="color"/>
+                <field name="power" optional="show"/>
+                <field name="rarity"/>
+                <field name="sellValue" string="Venta ($)" widget="float" decoration-bf="1"/>
+>>>>>>> Stashed changes
+            </tree>
+        </field>
+    </record>
+
+<<<<<<< Updated upstream
+    <record id="view_one_piece_form" model="ir.ui.view">
+        <field name="name">carta.carta.form</field>
+        <field name="model">carta.carta</field> <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="card_id"/>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
+                        <group>
+                            <field name="franchise"/>
+                            <field name="rarity"/>
+                            <field name="sellValue"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Descripción">
+                            <field name="description"/>
+=======
+    <record id="view_onepiece_form" model="ir.ui.view">
+        <field name="name">onepiece.card.form</field>
+        <field name="model">onepiece.card</field>
+        <field name="arch" type="xml">
+            <form string="Ficha de Tripulación">
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                        <h3><field name="card_id"/></h3>
+                    </div>
+                    <group>
+                        <group string="Datos de Combate">
+                            <field name="type_card"/>
+                            <field name="color"/>
+                            <field name="power"/>
+                            <field name="rarity"/>
+                        </group>
+                        <group string="Mercado Pirata">
+                            <label for="marketValue"/>
+                            <div class="o_row">
+                                <field name="marketValue"/><span>$</span>
+                            </div>
+                            <label for="sellValue"/>
+                            <div class="o_row">
+                                <field name="sellValue" style="font-weight: bold; font-size: 1.3em; color: #d32f2f;"/>
+                                <span style="font-weight: bold; font-size: 1.3em; color: #d32f2f;">$</span>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Efecto de Carta">
+                            <field name="description" placeholder="Efecto [DON!! x1]..."/>
+>>>>>>> Stashed changes
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+<<<<<<< Updated upstream
+     </record>
+=======
+    </record>
+>>>>>>> Stashed changes
+</odoo>

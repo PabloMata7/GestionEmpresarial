@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+<<<<<<< Updated upstream
+access_carta_carta,access_carta_carta,model_carta_carta,base.group_user,1,1,1,1
+=======
+access_onepiece_card,access.onepiece.card,model_onepiece_card,base.group_user,1,1,1,1
+>>>>>>> Stashed changes
