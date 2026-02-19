@@ -1,53 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-<<<<<<< Updated upstream
-    <!-- ========================= -->
-    <!--        ACCIÓN             -->
-    <!-- ========================= -->
-    <record id="action_carta" model="ir.actions.act_window">
-        <field name="name">Cartas</field>
-=======
     <record id="action_carta" model="ir.actions.act_window">
         <field name="name">Grimorio de Glimmers</field>
->>>>>>> Stashed changes
         <field name="res_model">carta</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-<<<<<<< Updated upstream
-                Crea tu primera carta de Lorcana
-=======
                 Inicia tu aventura de Lorcana
             </p>
             <p>
                 No tienes cartas registradas. ¡Añade tu primer <b>Glimmer</b> ahora!
->>>>>>> Stashed changes
             </p>
         </field>
     </record>
-
-
-<<<<<<< Updated upstream
-    <!-- ========================= -->
-    <!--      MENÚ PRINCIPAL       -->
-    <!-- ========================= -->
-    <menuitem id="menu_lorcana_root"
-              name="Lorcana"
-              sequence="10"
-              web_icon="base/static/description/icon.png"/>
-
-
-    <!-- ========================= -->
-    <!--        SUBMENÚ            -->
-    <!-- ========================= -->
-    <menuitem id="menu_lorcana_cartas"
-              name="Cartas"
-              parent="menu_lorcana_root"
-              action="action_carta"
-              sequence="1"/>
-
-=======
     <menuitem id="menu_lorcana_root"
               name="Lorcana TCG"
               sequence="10"
@@ -66,5 +31,4 @@
               action="action_carta"
               sequence="10"/>
 
->>>>>>> Stashed changes
 </odoo>
