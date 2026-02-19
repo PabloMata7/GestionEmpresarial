@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+<<<<<<< Updated upstream
     <!-- ===================================== -->
     <!--              VISTA TREE               -->
     <!-- ===================================== -->
+=======
+>>>>>>> Stashed changes
     <record id="view_carta_tree" model="ir.ui.view">
         <field name="name">carta.tree</field>
         <field name="model">carta</field>
         <field name="arch" type="xml">
             <tree string="Cartas de Lorcana">
+<<<<<<< Updated upstream
                 <field name="carta_id"/>
                 <field name="name"/>
                 <field name="franchise"/>
@@ -17,20 +21,33 @@
                 <field name="grade"/>
                 <field name="marketValue"/>
                 <field name="sellValue"/>
+=======
+                <field name="carta_id" optional="show"/>
+                <field name="name"/>
+                <field name="rarity" widget="badge" decoration-info="rarity == 'Rare'"/>
+                <field name="grade" optional="hide"/>
+                
+                <field name="marketValue" string="Mercado ($)"/>
+                <field name="sellValue" string="Venta ($)" decoration-bf="1"/>
+>>>>>>> Stashed changes
             </tree>
         </field>
     </record>
 
+<<<<<<< Updated upstream
 
     <!-- ===================================== -->
     <!--              VISTA FORM               -->
     <!-- ===================================== -->
+=======
+>>>>>>> Stashed changes
     <record id="view_carta_form" model="ir.ui.view">
         <field name="name">carta.form</field>
         <field name="model">carta</field>
         <field name="arch" type="xml">
             <form string="Carta de Lorcana">
                 <sheet>
+<<<<<<< Updated upstream
 
                     <!-- TÍTULO GRANDE -->
                     <div class="oe_title">
@@ -74,6 +91,42 @@
                         <field name="description" placeholder="Escribe una descripción de la carta..."/>
                     </group>
 
+=======
+                    <field name="image" widget="image" class="oe_avatar"/>
+
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="carta_id"/>
+                            <field name="colection"/>
+                            <field name="rarity"/>
+                            <field name="grade"/>
+                        </group>
+
+                        <group string="Precios">
+                            <label for="marketValue"/>
+                            <div class="o_row">
+                                <field name="marketValue"/>
+                                <span>$</span> </div>
+
+                            <label for="sellValue"/>
+                            <div class="o_row">
+                                <field name="sellValue" style="font-weight: bold; font-size: 1.2em;"/>
+                                <span style="font-weight: bold; font-size: 1.2em;">$</span>
+                            </div>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Descripción">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+>>>>>>> Stashed changes
                 </sheet>
             </form>
         </field>

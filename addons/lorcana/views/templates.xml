@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< Updated upstream
   <odoo>
   
       <!-- Lista de cartas -->
@@ -53,4 +54,231 @@
       </template>
   
   </odoo>
+=======
+<odoo>
+    <data>
+        <template id="lorcana_website_list" name="Illumineer's Trove">
+            <t t-call="website.layout">
+                
+                <style>
+                    /* Fondo Pergamino Suave */
+                    .lorcana-bg {
+                        background-color: #fdfbf7; 
+                        min-height: 100vh;
+                        padding-bottom: 50px;
+                    }
+                    
+                    /* Carta con toque mágico */
+                    .lorcana-card {
+                        border: 1px solid #e0e0e0;
+                        border-radius: 8px; /* Menos redondeado, más como un libro */
+                        transition: all 0.4s ease;
+                        background: #fff;
+                        overflow: hidden; 
+                        position: relative;
+                        box-shadow: 0 4px 6px rgba(42, 27, 61, 0.05); /* Sombra violeta muy sutil */
+                    }
+
+                    .lorcana-card:hover {
+                        transform: translateY(-5px) scale(1.02);
+                        box-shadow: 0 12px 24px rgba(197, 160, 89, 0.3); /* Sombra dorada al hover */
+                        border-color: #c5a059; /* Borde dorado */
+                        cursor: pointer;
+                    }
+
+                    /* Etiqueta de precio estilo "Lore" */
+                    .lorcana-price {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        background: #2a1b3d; /* Violeta oscuro Lorcana */
+                        color: #c5a059; /* Texto Dorado */
+                        padding: 5px 12px;
+                        border-radius: 4px;
+                        font-family: serif; /* Toque elegante */
+                        font-weight: bold;
+                        z-index: 100;
+                        border: 1px solid #c5a059;
+                    }
+
+                    .lorcana-img-container {
+                        height: 300px; /* Cartas de Lorcana suelen lucir mejor un pelín más grandes */
+                        background: radial-gradient(circle, #ffffff 0%, #f0f0f0 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+                    }
+
+                    .lorcana-img {
+                        max-height: 100%;
+                        max-width: 100%;
+                        object-fit: contain;
+                        filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));
+                    }
+                </style>
+
+                <div class="lorcana-bg">
+                    <div class="text-center py-5">
+                        <h1 class="display-4" style="font-family: serif; color: #2a1b3d;">Illumineer's Trove</h1>
+                        <p class="lead text-muted font-italic">Recopilación de Glimmers y Tintas.</p>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <t t-foreach="cartas" t-as="c">
+                                <div class="col-12 col-sm-6 col-lg-3 mb-4">
+                                    <a t-attf-href="/carta/#{c.id}" class="card lorcana-card h-100 text-decoration-none">
+                                        
+                                        <div class="lorcana-price">
+                                            <t t-esc="c.sellValue" t-options='{"widget": "float", "precision": 2}'/> 
+                                            <small>€</small>
+                                        </div>
+
+                                        <div class="lorcana-img-container">
+                                            <img class="lorcana-img" 
+                                                 t-attf-src="/web/image/carta/#{c.id}/image" 
+                                                 alt="Lorcana Card"/>
+                                        </div>
+
+                                        <div class="card-body text-center">
+                                            <span class="text-uppercase text-muted small" style="letter-spacing: 2px;">
+                                                <t t-esc="c.franchise"/> 
+                                            </span>
+                                            
+                                            <h5 class="card-title mt-2 mb-1" style="color: #2a1b3d; font-family: serif; font-weight: bold;">
+                                                <t t-esc="c.name"/>
+                                            </h5>
+                                            
+                                            <div class="d-flex justify-content-center mt-2">
+                                                <span class="badge badge-light border"><t t-esc="c.rarity"/></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <template id="web_carta_detail" name="Detalle de Glimmer">
+            <t t-call="website.layout">
+                
+                <style>
+                    .lorcana-bg { background-color: #fdfbf7; min-height: 100vh; }
+                    
+                    .detail-card-box {
+                        background: #fff;
+                        border: 1px solid #e0e0e0;
+                        border-radius: 10px;
+                        padding: 20px;
+                        box-shadow: 0 4px 15px rgba(42, 27, 61, 0.05);
+                    }
+                    
+                    .lorcana-header { font-family: serif; color: #2a1b3d; font-weight: bold; }
+                    
+                    .stat-row {
+                        border-bottom: 1px dashed #c5a059;
+                        padding: 10px 0;
+                        font-family: serif;
+                    }
+                    
+                    .price-box {
+                        background: #2a1b3d;
+                        color: #c5a059;
+                        padding: 15px;
+                        border-radius: 8px;
+                        text-align: center;
+                        border: 2px solid #c5a059;
+                    }
+                </style>
+
+                <div class="lorcana-bg pb-5">
+                    
+                    <div class="container py-4">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb bg-transparent p-0">
+                                <li class="breadcrumb-item"><a href="/carta" class="text-muted">Illumineer's Trove</a></li>
+                                <li class="breadcrumb-item active text-dark" aria-current="page"><t t-esc="carta.name"/></li>
+                            </ol>
+                        </nav>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            
+                            <div class="col-md-5 mb-4">
+                                <div class="detail-card-box text-center">
+                                    <img class="img-fluid rounded" 
+                                         t-attf-src="/web/image/carta/#{carta.id}/image" 
+                                         style="max-height: 500px; filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.2));"
+                                         alt="Carta Detalle"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-7">
+                                <div class="detail-card-box h-100">
+                                    
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h1 class="lorcana-header display-4"><t t-esc="carta.name"/></h1>
+                                            <span class="text-muted">ID: #<t t-esc="carta.carta_id"/></span>
+                                        </div>
+                                        <span class="badge badge-warning text-white p-2"><t t-esc="carta.rarity"/></span>
+                                    </div>
+
+                                    <hr style="border-color: #c5a059;"/>
+
+                                    <div class="row my-4">
+                                        <div class="col-6">
+                                            <div class="text-muted small text-uppercase mb-1">Mercado</div>
+                                            <h3 class="text-muted">
+                                                <t t-esc="carta.marketValue" t-options='{"widget": "float", "precision": 2}'/> $
+                                            </h3>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="price-box shadow">
+                                                <div class="small text-uppercase mb-1" style="opacity: 0.8">Precio Venta</div>
+                                                <h2 class="m-0 font-weight-bold">
+                                                    <t t-esc="carta.sellValue" t-options='{"widget": "float", "precision": 2}'/> €
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        
+                                        <div class="stat-row d-flex justify-content-between">
+                                            <span>Colección</span>
+                                            <span class="font-weight-bold"><t t-esc="carta.colection"/></span>
+                                        </div>
+                                        <div class="stat-row d-flex justify-content-between">
+                                            <span>Grado</span>
+                                            <span class="font-weight-bold"><t t-esc="carta.grade"/></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 p-3 bg-light rounded font-italic text-muted border">
+                                        <i class="fa fa-quote-left mr-2"></i>
+                                        <t t-esc="carta.description"/>
+                                    </div>
+
+                                    <div class="mt-5">
+                                        <a href="/carta" class="btn btn-outline-dark btn-block">
+                                            &lt; Volver al Grimorio
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
+>>>>>>> Stashed changes
   

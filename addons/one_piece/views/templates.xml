@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <odoo>
     <template id="web_one_piece_list" name="Listado de Cartas">
         <t t-call="website.layout">
@@ -41,4 +42,86 @@
             </div>
         </t>
     </template>
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="website_list" name="One Piece Collection">
+            <t t-call="website.layout">
+                <style>
+                    .op-bg { background-color: #e3f2fd; min-height: 100vh; padding-bottom: 50px; }
+                    .op-card {
+                        border: 2px solid #0d47a1; /* Azul marino */
+                        border-radius: 0px; /* Cuadrado, tosco */
+                        transition: transform 0.3s;
+                    }
+                    .op-card:hover { transform: scale(1.05); border-color: #d32f2f; cursor: pointer; }
+                    .wanted-price {
+                        position: absolute; top: 0; right: 0;
+                        background: #d32f2f; color: white;
+                        font-weight: bold; padding: 5px 10px;
+                        z-index: 10;
+                    }
+                </style>
+                
+                <div class="op-bg">
+                    <div class="container pt-5">
+                        <h1 class="text-center mb-5 font-weight-bold text-uppercase" style="color: #0d47a1;">New World Database</h1>
+                        
+                        <div class="row">
+                            <t t-foreach="nakamas" t-as="n">
+                                <div class="col-12 col-md-4 col-lg-3 mb-4">
+                                    <a t-attf-href="/onepiece/#{n.id}" class="card op-card h-100 text-decoration-none text-dark">
+                                        <div class="wanted-price">
+                                            <t t-esc="n.sellValue" t-options='{"widget": "float", "precision": 0}'/> $
+                                        </div>
+                                        <div class="p-3 text-center" style="background: #fff;">
+                                            <img t-attf-src="/web/image/onepiece.card/#{n.id}/image" class="img-fluid" style="max-height: 250px;"/>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <h5 class="font-weight-bold"><t t-esc="n.name"/></h5>
+                                            <span class="badge badge-primary"><t t-esc="n.type_card"/></span>
+                                            <span class="badge badge-secondary"><t t-esc="n.color"/></span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="website_detail" name="Detalle Nakama">
+            <t t-call="website.layout">
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <img t-attf-src="/web/image/onepiece.card/#{card.id}/image" class="img-fluid shadow-lg" style="border: 5px solid #0d47a1;"/>
+                        </div>
+                        <div class="col-md-6">
+                            <h1 class="display-4 font-weight-bold text-danger"><t t-esc="card.name"/></h1>
+                            <h3>ID: <t t-esc="card.card_id"/></h3>
+                            <hr/>
+                            <div class="alert alert-info">
+                                <strong>Poder:</strong> <t t-esc="card.power"/> | 
+                                <strong>Color:</strong> <t t-esc="card.color"/>
+                            </div>
+                            <div class="p-3 bg-light border rounded">
+                                <h5>Descripción:</h5>
+                                <p><t t-esc="card.description"/></p>
+                            </div>
+                            <div class="mt-4">
+                                <h2 class="text-success font-weight-bold">
+                                    Precio: <t t-esc="card.sellValue"/> $
+                                </h2>
+                            </div>
+                            <a href="/onepiece" class="btn btn-primary mt-3">Volver al Barco</a>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+>>>>>>> Stashed changes
 </odoo>
